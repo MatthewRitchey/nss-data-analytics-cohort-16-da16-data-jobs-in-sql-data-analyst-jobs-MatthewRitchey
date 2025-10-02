@@ -24,21 +24,21 @@ SELECT COUNT (*)
 FROM data_analyst_jobs
 WHERE location IN ('KY','TN'); --27 total
 -- 4.	How many postings in Tennessee have a star rating above 4?
-SELECT title, star_rating
+SELECT COUNT (*)
 FROM data_analyst_jobs
-WHERE star_rating >4; --416 companies
+WHERE star_rating >4
+	AND location LIKE ('TN'); --416 companies
 -- 5.	How many postings in the dataset have a review count between 500 and 1000?
 SELECT COUNT(*)
 FROM data_analyst_jobs
 WHERE review_count BETWEEN '500' AND '1000'; --151 postings
 -- 6.	Show the average star rating for companies in each state. The output should show the state as `state` and the average rating for the state as `avg_rating`. Which state shows the highest average rating?
-SELECT DISTINCT
+SELECT
 	location AS state,
 	AVG(star_rating) AS avg_rating	
 FROM data_analyst_jobs
 WHERE star_rating IS NOT NULL
-GROUP BY location, star_rating
-ORDER BY avg_rating DESC;
+GROUP BY location;
 -- 7.	Select unique job titles from the data_analyst_jobs table. How many are there?
 SELECT COUNT(DISTINCT title)
 FROM data_analyst_jobs; --881
@@ -68,9 +68,14 @@ GROUP BY company, location
 ORDER BY avg_rating DESC --American Express, General Motors, Kaiser Permanente, Microsoft, Nike, and Unilever, all with a 4.20 avg rating
 
 -- 11.	Find all the job titles that contain the word ‘Analyst’. How many different job titles are there? 
-
+SELECT DISTINCT (title)
+FROM data_analyst_jobs
+WHERE title iLIKE '%Analyst%'--774 jobs
 -- 12.	How many different job titles do not contain either the word ‘Analyst’ or the word ‘Analytics’? What word do these positions have in common?
-
+SELECT DISTINCT (title)
+FROM data_analyst_jobs
+WHERE title NOT iLIKE '%Analyst%'
+AND title NOT iLIKE '%Analytics%' --4? (all say "Tableau")
 -- **BONUS:**
 -- You want to understand which jobs requiring SQL are hard to fill. Find the number of jobs by industry (domain) that require SQL and have been posted longer than 3 weeks. 
 --  - Disregard any postings where the domain is NULL. 
